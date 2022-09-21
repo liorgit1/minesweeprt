@@ -1,0 +1,43 @@
+
+body{
+    text-align: center;
+    justify-content: center;
+    background-image: url('/bg.webp');
+background-repeat: no-repeat;
+    background-size: cover;
+}
+.big-bord{
+    margin: auto;
+    margin-top: 10%;
+height: 500px;
+width: 500px;
+background-color: gray;
+}
+
+table{
+        
+    margin-top: 10px;
+    height: 100%;
+    width: 100%; 
+text-align: center;
+justify-content: center;
+bottom: 50px;
+}
+
+td{
+
+height: 50px;
+width: 50px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+button{
+    display: inline-block;
+    margin-top: 200px;
+    margin-bottom: 2px;
+    height: 100px;
+    width: 100px;
+    border-radius: 20px;
+}
+
