@@ -2,42 +2,116 @@
 body{
     text-align: center;
     justify-content: center;
-    background-image: url('/bg.webp');
+    background-image: url(https://wallpaper.dog/large/10987744.jpg);
+    background-position: fixed ;
 background-repeat: no-repeat;
-    background-size: cover;
+    background-size:cover;
+    size: 100%;
 }
 .big-bord{
+   display: block;
     margin: auto;
-    margin-top: 10%;
+    /* margin-top: 10%; */
 height: 500px;
 width: 500px;
-background-color: gray;
+
 }
 
 table{
-        
+    
     margin-top: 10px;
     height: 100%;
     width: 100%; 
 text-align: center;
 justify-content: center;
-bottom: 50px;
+/* bottom: 50px; */
 }
 
 td{
-
-height: 50px;
-width: 50px;
+    
+    cursor: pointer;
+    font-size: 15px;
+    background-color: gray;
+height: 25px;
+width: 25px;
     text-align: center;
     border: 1px solid black;
+    color: rgb(246, 0, 0);
 }
 
 button{
+    
     display: inline-block;
     margin-top: 200px;
     margin-bottom: 2px;
     height: 100px;
     width: 100px;
     border-radius: 20px;
+    font-weight: 900;
+    font-size: 20px;
+    background-color: #0000fa;
+    opacity: 1;
+    background-size: 9px 9px;
+    background-image: repeating-linear-gradient(45deg, #45c4f7 0, #45c4f7 0.9px, #0000fa 0, #0000fa 50%);
 }
+.shown{
 
+    display: inline;
+    margin-top: 200px;
+    
+    
+    border-radius: 20px;
+
+
+
+}
+.shownDiv{
+  position: absolute;
+  font-weight: 900;
+color: aqua;
+    height: 50px;
+    width: 50px;
+    right: 37%;
+    bottom: 2%;
+    border-radius: 20px;
+} 
+
+
+.flags{
+
+    display: inline;
+    margin-top: 200px;
+    
+    
+    border-radius: 20px;
+}
+.flagsDiv{
+position: absolute;
+color: aqua;
+font-weight: 900;
+    height: 50px;
+    width: 50px;
+    right: 50%;
+    bottom: 2%;
+    border-radius: 20px;
+} 
+.modal{
+    position: absolute;
+    text-align: center;
+    right: 50%;
+    background-color: transparent;
+    height: 200px;
+    width: 200px;
+    font-size: larger;
+    color: rgb(255, 0, 0);
+    display: none;
+}
+.clicked{
+    background-color: rgb(46, 45, 45);
+}
+.smile{
+    font-size: 50px;
+position: absolute;
+right: 50%;
+top: 10%;
+}

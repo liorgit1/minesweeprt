@@ -2,76 +2,58 @@ var gBord
 // var bombCount = countBombs(gBord)
 const BOMB = '💣'
 const FLAG = '🚩'
-
-
-
-
-function initGame() {
-    gBord = createMat(8, 8)
-    placeBombs(gBord, 12)
-    console.log('gBord :>> ', gBord);
-    renderBoard(gBord)
+var shown = 0
+var flags = 0
+var clickCount = 0
+gGame = {
+    isOn: true,
+    shownCount: 0,
+    markedCount: 0,
+    secsPassed: 0
 }
+const gLevel = {
+    SIZE: 4,
+    MINES: 2
+}
+
+
+
+
+function initGame(size = gLevel.SIZE, mines = gLevel.MINES) {
+    document.querySelector('.smile').innerText = '😀'
+    flags = 0
+    shown = 0
+    var modal = document.querySelector('.modal')
+    var bord = document.querySelector('.big-bord')
+    bord.style.display = "block"
+    document.querySelector('.flags').innerText = 0
+    document.querySelector('.shown').innerText = 0
+    gBord = createMat(size, size)
+    placeBombs(gBord, mines)
+    console.log('gBord :>> ', gBord)
+    renderBoard(gBord)
+    gLevel.SIZE = size
+    gLevel.MINES = mines
+    modal.querySelector('h1').innerText = 'Try again'
+    modal.style.display = "none"
+    clickCount = 0
+
+
+}
+
+
+
+
 
 function placeBombs(bord, bombsNum) {
     for (var i = 0; i < bombsNum; i++) {
         placeBomb(bord)
     }
-    var bombCount = countBombs(bord)
+    var bombCount = countBombs(gBord)
+    i
+    // debugger
 
-    if (bombCount !== bombsNum) {
-        
-        placeBomb(gBord)
-    }
-    bombCount = countBombs(bord)
 
-    if (bombCount !== bombsNum) {
-        
-        placeBomb(gBord)
-    }
-    bombCount = countBombs(bord)
-
-    if (bombCount !== bombsNum) {
-        
-        placeBomb(gBord)
-    }
-    bombCount = countBombs(bord)
-
-    if (bombCount !== bombsNum) {
-        
-        placeBomb(gBord)
-    }
-    bombCount = countBombs(bord)
-
-    if (bombCount !== bombsNum) {
-        
-        placeBomb(gBord)
-    }
-    bombCount = countBombs(bord)
-
-    if (bombCount !== bombsNum) {
-        
-        placeBomb(gBord)
-    }
-    bombCount = countBombs(bord)
-
-    if (bombCount !== bombsNum) {
-        
-        placeBomb(gBord)
-    }
-    bombCount = countBombs(bord)
-
-    if (bombCount !== bombsNum) {
-        
-        placeBomb(gBord)
-    }
-    bombCount = countBombs(bord)
-
-    if (bombCount !== bombsNum) {
-        
-        placeBomb(gBord)
-    }
-    
     console.log('bombCount :>> ', bombCount);
 
 }
@@ -80,28 +62,94 @@ function placeBombs(bord, bombsNum) {
 
 function placeBomb(bord) {
 
-    var bombCount = 0
-    var randI = getRandomIntInclusive(0, bord.length - 1)
-    var randJ = getRandomIntInclusive(0, bord[0].length - 1)
-    // debugger
-    for (let i = 0; i < 1; i++) {
-        bord[randI][randJ].isMine = true
+    var emptyPos = getEmptyPos(bord)
+    for (let i = 0; i < 1; i++) { bord[emptyPos.i][emptyPos.j].isMine = true }
+    return bord
+    // console.log('bord :>> ', bord);
+}
+
+
+
+
+
+
+function counShown(bord = gBord) {
+    var shownCount = 0
+    for (let i = 0; i < bord.length; i++) {
+        for (let j = 0; j < bord[i].length; j++) {
+            const currCell = bord[i][j];
+            if (currCell.isShown) shownCount++
+        }
+    } return shownCount
+}
+
+document.addEventListener('contextmenu', ev => {
+    ev.preventDefault()
+
+})
+
+function putFlag(elCell) {
+    var pos = getpos(elCell)
+    var currCell = gBord[pos.i][pos.j]
+    if (currCell.isShown) return
+    if (currCell.isMarked === false) {
+        elCell.innerText = FLAG
+        currCell.isMarked = true
+
+    } else if (currCell.isMarked) {
+        elCell.innerText = ''
+        currCell.isMarked = false
+    }
+    flags = counflags(gBord)
+    document.querySelector('.flags').innerText = flags
+    console.log('gBord :>> ', gBord);
+}
+
+function cellClicked(elCell, i, j) {
+
+    var pos = getpos(elCell)
+    // console.log('pos :>> ', pos);
+    var i = pos.i
+    var j = pos.j
+    var currCell = gBord[pos.i][pos.j]
+    if (currCell.isMarked) return
+    if (currCell.isMine) {
+        elCell.innerText = BOMB
+        gameOver()
+        // gGame.isOn=false
     }
 
 
 
-    return bord,
-        console.log('bord :>> ', bord);
+
+    elCell.innerText = countBombAround(gBord, pos.i, pos.j)
+    elCell.classList.add('clicked')
+    currCell.isShown = true
+    shown = counShown(gBord)
+    document.querySelector('.shown').innerText = shown
+    // console.log('elCell :>> ', elCell);
+    checkGameOver()
+}
+function checkGameOver() {
+    if (shown === (gLevel.SIZE) ** 2 - (gLevel.MINES)) {
+        var bord = document.querySelector('.big-bord')
+        bord.style.display = "none"
+        var modal = document.querySelector('.modal')
+        modal.style.display = "block"
+        modal.querySelector('h1').innerText = 'you are a winnner !'
+        document.querySelector('.smile').innerText = '😎'
+    }
+
+    else return
+
 
 }
-
-
-function countBombs(bord) {
-    var bombCount = 0
-    for (let i = 0; i < bord.length; i++) {
-        for (let j = 0; j < bord[i].length; j++) {
-            const currCell = bord[i][j];
-            if (currCell.isMine) bombCount++
-        }
-    } return bombCount
+function gameOver() {
+    var bord = document.querySelector('.big-bord')
+    bord.style.display = "none"
+    var modal = document.querySelector('.modal')
+    modal.querySelector('h1').innerText = 'Try again'
+    modal.style.display = "block"
+    document.querySelector('.smile').innerText = '😥'
 }
+

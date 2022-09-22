@@ -10,9 +10,9 @@ function createMat(ROWS, COLS) {
 
             row.push({
                 minesAroundCount: 4,
-                isShown: true,
+                isShown: false,
                 isMine: false,
-                isMarked: true
+                isMarked: false
             })
 
         }
@@ -20,17 +20,12 @@ function createMat(ROWS, COLS) {
         mat.push(row)
 
     }
-    console.log('mat :>> ', mat);
+    // console.log('mat :>> ', mat);
     return mat
 }
 
 
 
-var testBord = [
-    ['', BOMB, '', BOMB],
-    ['', '', '', ''],
-    ['', '', '', ''],
-    ['', '', '', '']]
 
 
 
@@ -44,9 +39,8 @@ function renderBoard(board) {
             var bombsAround = countBombAround(board, i, j)
             if (!bombsAround) bombsAround = ''
 
-            if (currCell.isMine) strHTML += `<td data-cell="${i},${j}" onclick="cellClicked(this)" > </td>`
-            else strHTML += `<td data-cell="${i},${j}" onclick="cellClicked(this)" >
-            </td>`
+            strHTML += `<td data-cell="${i},${j}" oncontextmenu= "putFlag(this)"onclick="cellClicked(this)" > </td>`
+
 
 
         }
@@ -57,21 +51,7 @@ function renderBoard(board) {
     elBoard.innerHTML = strHTML
 }
 
-function cellClicked(elCell, i, j) {
-    var pos = getpos(elCell)
-    // console.log('pos :>> ', pos);
-    var i = pos.i
-    var j = pos.j
-    var currCell = gBord[pos.i][pos.j]
 
-    if (currCell.isMine) {
-        elCell.innerText = BOMB
-        console.log('game over ');
-    }
-    else {
-        elCell.innerText = countBombAround(gBord, pos.i, pos.j)
-    }
-}
 
 
 function getpos(elCell) {
@@ -86,6 +66,7 @@ function getpos(elCell) {
     return pos
 
 }
+
 function countBombAround(board, rowIdx, colIdx) {
     var bombCount = 0
     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
@@ -108,6 +89,44 @@ function getRandomIntInclusive(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
+// ***************HOW DO I MAKE THIS WORK ?!?!?!?!!?*****************
+// showAround(gBord, 1, 1)
+
+// function showAround(bord, rowIdx, colIdx) {
+
+//     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+//         if (i < 0 || i >= bord.length) continue
+//         for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+//             if (i === rowIdx && j === colIdx) continue
+//             if (j < 0 || j >= bord[0].length) continue
+
+//             var currCell = bord[i][j]
+//             currCell.isShown = true
+//             el.dataset.cell[i][j].innerText = countBombAround(gBord, i, j)
+
+//         }
+//     }
+//     return bord
+//     // console.log('bombCount :>> ', bombCount);
+
+// }
+
+
+
+
+function counflags(bord = gBord) {
+    var flagsCount = 0
+    for (let i = 0; i < bord.length; i++) {
+        for (let j = 0; j < bord[i].length; j++) {
+            const currCell = bord[i][j];
+            if (currCell.isMarked) flagsCount++
+        }
+    } return flagsCount
+}
+
+
+
+
 
 // function getRandomColor() {
 //     var letters = '0123456789ABCDEF'
@@ -119,3 +138,30 @@ function getRandomIntInclusive(min, max) {
 // }
 
 
+function getEmptyPos(bord) {
+
+    const emptyPoses = []
+    for (var i = 1; i < bord.length - 1; i++) {
+        for (var j = 1; j < bord[0].length - 1; j++) {
+            const currCell = bord[i][j]
+            if (currCell.isMine === false) {
+                emptyPoses.push({ i: i, j: j })
+            }
+        }
+    }
+    const randIdx = getRandomIntInclusive(0, emptyPoses.length - 1)
+    // console.log('emptyPoses :>> ', emptyPoses);
+    // console.log('emptyPoses[randIdx] :>> ', emptyPoses[randIdx]);
+    if (!emptyPoses.length) return null
+    return emptyPoses[randIdx]
+}
+
+function countBombs(bord) {
+    var bombCount = 0
+    for (let i = 0; i < bord.length; i++) {
+        for (let j = 0; j < bord[i].length; j++) {
+            const currCell = bord[i][j];
+            if (currCell.isMine) bombCount++
+        }
+    } return bombCount
+}
