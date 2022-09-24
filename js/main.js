@@ -15,10 +15,6 @@ const gLevel = {
     SIZE: 4,
     MINES: 2
 }
-
-
-
-
 function initGame(size = gLevel.SIZE, mines = gLevel.MINES) {
     document.querySelector('.smile').innerText = '😀'
     flags = 0
@@ -30,20 +26,16 @@ function initGame(size = gLevel.SIZE, mines = gLevel.MINES) {
     document.querySelector('.shown').innerText = 0
     gBord = createMat(size, size)
     placeBombs(gBord, mines)
-    console.log('gBord :>> ', gBord)
     renderBoard(gBord)
     gLevel.SIZE = size
     gLevel.MINES = mines
     modal.querySelector('h1').innerText = 'Try again'
     modal.style.display = "none"
     clickCount = 0
+    // console.log('gBord :>> ', gBord)
 
 
 }
-
-
-
-
 
 function placeBombs(bord, bombsNum) {
     for (var i = 0; i < bombsNum; i++) {
@@ -58,8 +50,6 @@ function placeBombs(bord, bombsNum) {
 
 }
 
-
-
 function placeBomb(bord) {
 
     var emptyPos = getEmptyPos(bord)
@@ -67,11 +57,6 @@ function placeBomb(bord) {
     return bord
     // console.log('bord :>> ', bord);
 }
-
-
-
-
-
 
 function counShown(bord = gBord) {
     var shownCount = 0
@@ -119,15 +104,19 @@ function cellClicked(elCell, i, j) {
         // gGame.isOn=false
     }
 
-
-
-
     elCell.innerText = countBombAround(gBord, pos.i, pos.j)
     elCell.classList.add('clicked')
     currCell.isShown = true
     shown = counShown(gBord)
     document.querySelector('.shown').innerText = shown
     // console.log('elCell :>> ', elCell);
+    // if (elCell.innerText==='') {
+    // }
+    if (!elCell.innerText) {
+        showAround(gBord, i, j)
+    }
+
+
     checkGameOver()
 }
 function checkGameOver() {

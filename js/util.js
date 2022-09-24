@@ -24,12 +24,6 @@ function createMat(ROWS, COLS) {
     return mat
 }
 
-
-
-
-
-
-
 function renderBoard(board) {
     var strHTML = ''
     for (let i = 0; i < board.length; i++) {
@@ -51,18 +45,16 @@ function renderBoard(board) {
     elBoard.innerHTML = strHTML
 }
 
-
-
-
 function getpos(elCell) {
 
     var data = elCell.dataset.cell.split(',')
 
-    // console.log('tada :>> ', data);
+    console.log('tada :>> ', data);
 
     var pos = {}
     pos.i = +data[0]
     pos.j = +data[1]
+    console.log('pos :>> ', pos);
     return pos
 
 }
@@ -89,30 +81,40 @@ function getRandomIntInclusive(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-// ***************HOW DO I MAKE THIS WORK ?!?!?!?!!?*****************
-// showAround(gBord, 1, 1)
 
-// function showAround(bord, rowIdx, colIdx) {
+function showAround(bord, rowIdx, colIdx) {
 
-//     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
-//         if (i < 0 || i >= bord.length) continue
-//         for (var j = colIdx - 1; j <= colIdx + 1; j++) {
-//             if (i === rowIdx && j === colIdx) continue
-//             if (j < 0 || j >= bord[0].length) continue
+    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+        if (i < 0 || i >= bord.length) continue
+        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+            if (i === rowIdx && j === colIdx) continue
+            if (j < 0 || j >= bord[0].length) continue
 
-//             var currCell = bord[i][j]
-//             currCell.isShown = true
-//             el.dataset.cell[i][j].innerText = countBombAround(gBord, i, j)
+            var currCell = bord[i][j]
 
-//         }
-//     }
-//     return bord
-//     // console.log('bombCount :>> ', bombCount);
 
-// }
+            var elCell = document.querySelector(`[data-cell="${i},${j}" ]   `)
+
+            elCell.innerText = countBombAround(gBord, i, j)
+            console.log('elCell :>> ', elCell);
 
 
 
+
+
+            elCell.classList.add('clicked')
+            currCell.isShown = true
+            shown = counShown(gBord)
+            document.querySelector('.shown').innerText = shown
+            // console.log('elCell :>> ', elCell);
+            checkGameOver()
+        }
+    }
+    console.log('rowIdx :>> ', rowIdx);
+    console.log('colIdx :>> ', colIdx);
+    return bord
+
+}
 
 function counflags(bord = gBord) {
     var flagsCount = 0
@@ -124,10 +126,6 @@ function counflags(bord = gBord) {
     } return flagsCount
 }
 
-
-
-
-
 // function getRandomColor() {
 //     var letters = '0123456789ABCDEF'
 //     var color = '#'
@@ -136,8 +134,6 @@ function counflags(bord = gBord) {
 //     }
 //     return color
 // }
-
-
 function getEmptyPos(bord) {
 
     const emptyPoses = []
